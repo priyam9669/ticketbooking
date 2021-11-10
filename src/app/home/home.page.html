@@ -1,20 +1,167 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Seat Book
     </ion-title>
+    <ion-buttons slot="primary">
+      <ion-button routerLink="/list" color="secondary" fill="outline">
+        Bookings
+        <ion-icon slot="end" name="list"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" #content > 
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="inner_div">
+    <ion-item>
+      <ion-label>Date:(DD MM YY)</ion-label>
+      <ion-datetime displayFormat="DD MM YY" placeholder="Select Date" [(ngModel)]="booking_date" (ionChange)="get_booking($event.target.value)"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Enter Mobile" type="number" pattern="[0-9]+" maxlenght="10" [(ngModel)]="booking_mobile"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-input placeholder="Enter No. of Seats" type="number" pattern="[0-9]+" [(ngModel)]="seat_no" (ionChange)="validate_seat($event)" ></ion-input>
+    </ion-item> -->
+    <ion-item>
+      <ion-label>Enter No. of Seats</ion-label>
+      <ion-select placeholder="Select One" [(ngModel)]="seat_no" value="{{seat_no}}">
+        <ion-select-option *ngFor="let item of [].constructor(6); let i = index" value="{{i+1}}">{{i+1}} Seats</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <span style="height:400px!important;width:auto;">
+      <ion-grid class="rstar-grid-top" >
+        <ion-row color="primary" class="ion-justify-content-center rstar-row-margin rstar-row">
+          <!-- <ion-col class="ion-align-self-center">
+              <p>
+              <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <g class="layer">
+                 <title>Layer 1</title>
+                 <g id="svg_1">
+                  <rect fill="#B0B1AF" height="33.79881" id="svg_11" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.50805" x="11.71598" y="11.70119"></rect>
+                  <rect fill="#B0B1AF" height="4.62722" id="svg_16" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.16508" x="11.91716" y="40.87278"></rect>
+                  <rect fill="#B0B1AF" height="21.72781" id="svg_17" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="37.50805" y="23.77219"></rect>
+                  <rect fill="#B0B1AF" height="21.72781" id="svg_20" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="9" y="23.77219"></rect>
+                 </g>
+                </g>
+               </svg>
+               
+               Booked
+               </p>
+          </ion-col>
+          <ion-col class="ion-align-self-center">
+            
+            <p> 
+              <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+               <g class="layer">
+                <title>Layer 1</title>
+                <g id="svg_1">
+                 <rect fill="none" height="33.79881" id="svg_11" rx="5" ry="5" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.56805" x="11.71598" y="11.70119"></rect>
+                 <rect fill="#ffffff" height="4.62722" id="svg_16" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.16568" x="11.91716" y="40.87278"></rect>
+                 <rect fill="#ffffff" height="21.72781" id="svg_17" rx="5" ry="5" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="37.56805" y="23.77219"></rect>
+                 <rect fill="#ffffff" height="21.72781" id="svg_20" rx="5" ry="5" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="9" y="23.77219"></rect>
+                </g>
+               </g>
+              </svg>
+              Available
+            </p>
+            
+          </ion-col> -->
+          <ion-col class="ion-align-self-center" size="3" *ngFor="let seat of seat_array[selected_date]">
+            <span *ngIf="seat.booked_staus==true">
+              <ion-row>
+              <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <g class="layer">
+                 <title>Layer 1</title>
+                 <g id="svg_1">
+                  <rect fill="#B0B1AF" height="33.79881" id="svg_11" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.50805" x="11.71598" y="11.70119"></rect>
+                  <rect fill="#B0B1AF" height="4.62722" id="svg_16" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.16508" x="11.91716" y="40.87278"></rect>
+                  <rect fill="#B0B1AF" height="21.72781" id="svg_17" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="37.50805" y="23.77219"></rect>
+                  <rect fill="#B0B1AF" height="21.72781" id="svg_20" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="9" y="23.77219"></rect>
+                 </g>
+                </g>
+               </svg>
+               </ion-row>
+               <ion-row>
+                <p class="seat_no">
+                  {{seat.seat_no}}
+                </p>
+                
+              </ion-row>
+            </span>
+
+            <span  *ngIf="seat.booked_staus==false" (click)="select_seat(seat.id)"> 
+              <ion-row class="ion-text-center">
+              <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+               <g class="layer">
+                <title>Layer 1</title>
+                <g id="svg_1">
+                 <rect fill="none" height="33.79881" id="svg_11" rx="5" ry="5" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.56805" x="11.71598" y="11.70119"></rect>
+                 <rect fill="#ffffff" height="4.62722" id="svg_16" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.16568" x="11.91716" y="40.87278"></rect>
+                 <rect fill="#ffffff" height="21.72781" id="svg_17" rx="5" ry="5" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="37.56805" y="23.77219"></rect>
+                 <rect fill="#ffffff" height="21.72781" id="svg_20" rx="5" ry="5" stroke="#02A1EB" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="9" y="23.77219"></rect>
+                </g>
+               </g>
+              </svg>
+              </ion-row>
+              <ion-row>
+                <p class="seat_no">
+                  {{seat.seat_no}}
+                </p>
+                
+              </ion-row>
+            </span>
+
+            <span *ngIf="seat.booked_staus==='booking'" (click)="unselect_seat(seat.id)">
+              <ion-row class="ion-text-center">
+                <svg width="50" height="50" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+                <g class="layer">
+                  <title>Layer 1</title>
+                  <g id="svg_1">
+                  <rect fill="#02A1EB" height="33.79881" id="svg_11" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.56805" x="11.71598" y="11.70119"></rect>
+                  <rect fill="#02A1EB" height="4.62722" id="svg_16" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="28.16568" x="11.91716" y="40.87278"></rect>
+                  <rect fill="#02A1EB" height="21.72781" id="svg_17" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="37.56805" y="23.77219"></rect>
+                  <rect fill="#02A1EB" height="21.72781" id="svg_20" rx="5" ry="5" stroke="#FFFFFF" stroke-dasharray="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="2" width="5.43195" x="9" y="23.77219"></rect>
+                  </g>
+                </g>
+                </svg>
+              </ion-row>
+              <ion-row>
+                <p class="seat_no">
+                  {{seat.seat_no}}
+                </p>
+                
+              </ion-row>
+              
+              
+              
+            </span>
+            
+          </ion-col>
+        </ion-row>
+        
+    </ion-grid>
+    </span>
+    
+    
+    
+    
   </div>
+
 </ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar>
+    <ion-button *ngIf="!edit_flag" class="ion-margin-bottom" style="border-radius: 10px;"  size="large" type="button" expand="full" (click)="confirmBooking()" [disabled]="net_connection_check">
+      BOOK YOUR SEAT 
+      <ion-icon name="arrow-round-forward"></ion-icon>
+    </ion-button>
+    <ion-button *ngIf="edit_flag" class="ion-margin-bottom" style="border-radius: 10px;"  size="large" type="button" expand="full" (click)="editBooking()" [disabled]="net_connection_check">
+      Edit
+      <ion-icon name="arrow-round-forward"></ion-icon>
+    </ion-button>
+    
+  </ion-toolbar>
+</ion-footer>

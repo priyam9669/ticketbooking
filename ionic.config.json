@@ -1,5 +1,7 @@
 {
   "name": "TicketBooking",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

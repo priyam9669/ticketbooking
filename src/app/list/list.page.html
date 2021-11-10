@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Bookings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label>Date:</ion-label>
+      <ion-datetime displayFormat="DD MM YY" placeholder="Select Date" [(ngModel)]="booking_date" (ionChange)="get_booking($event.target.value)"></ion-datetime>
+    </ion-item>
+    <ion-item *ngFor="let booking of booking_list" routerLink="/home/{{booking.booking_id}}/{{booking.booking_date}}">
+      <ion-avatar slot="start" >
+        <ion-icon name="ticket"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h3>Booking Id:{{booking.booking_id}}</h3>
+        <p>Mobile No.:{{booking.mobile}}<br>
+          <ion-icon name="bed-outline"></ion-icon><span *ngFor="let seat of booking.seatNo">{{seat.seatNo}}, </span>
+        </p>
+      </ion-label>
+    </ion-item>
+
+    
+    
+  </ion-list>
+
+</ion-content>
